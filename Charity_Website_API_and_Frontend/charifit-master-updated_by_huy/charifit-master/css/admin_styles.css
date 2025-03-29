@@ -59,7 +59,8 @@ body {
     display: flex;
     align-items: center;
 }
-.nav-item i{
+
+.nav-item i {
     margin-right: 10px;
 }
 
@@ -128,7 +129,7 @@ body {
     .sidebar {
         width: 70px;
     }
-    
+
     .nav-item span {
         display: none;
     }
@@ -137,7 +138,7 @@ body {
         font-size: 0;
         padding: 15px 0;
     }
-    
+
     .logo::before {
         content: 'NT';
         font-size: 20px;
@@ -308,4 +309,64 @@ body {
     border-color: #3498db;
     outline: none;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    min-width: 120px;
+    z-index: 10;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+    background: #f1f1f1;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 8px 15px;
+    transition: background 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background: #f1f1f1;
+}
+
+/* Hiển thị menu khi class 'show' được thêm */
+.show {
+    display: block !important;
+}
+
+/* Định dạng icon mũi tên */
+.user-info i {
+    cursor: pointer;
+    margin-left: 5px;
 }

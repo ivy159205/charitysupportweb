@@ -283,6 +283,116 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKey",
+    "RelativePath": "api/GetJWTToken/GetKey",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "quyen",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKeyAdmin",
+    "RelativePath": "api/GetJWTToken/GetKeyAdmin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pwd",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKeyCustomer",
+    "RelativePath": "api/GetJWTToken/GetKeyCustomer",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pwd",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "GetKeyVolunteer",
+    "RelativePath": "api/GetJWTToken/GetKeyVolunteer",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pwd",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.GetJWTToken",
+    "Method": "Login",
+    "RelativePath": "api/GetJWTToken/Login",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pwd",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Charity_Website_API.Controllers.CampaignMed",
     "Method": "DeleteCampaignMed",
     "RelativePath": "CampaignMed/Delete",

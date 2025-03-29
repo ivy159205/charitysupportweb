@@ -80,14 +80,8 @@
                         <input type="text" id="mediaType" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Media</label>
-                        <div class="input-group">
-                            <input type="text" id="mediaURL" class="form-control" readonly>
-                            <input type="file" id="mediaFile" class="form-control" accept="image/*">
-                        </div>
-                        <div class="mt-2">
-                            <img id="previewImage" src="" alt="Preview" style="max-width: 100%; max-height: 200px; display: none;">
-                        </div>
+                        <label class="form-label">Media URL</label>
+                        <input type="text" id="mediaURL" class="form-control">
                     </div>
                     <button class="btn btn-success" onclick="saveCampaignMedia()">Lưu</button>
                 </div>
@@ -97,24 +91,11 @@
 
     <script>
         // Khai báo URL cơ bản của API
-        const baseUrl = 'https://localhost:7201/CampaignMedia';
-        let selectedFile = null;
+        const baseUrl = 'https://localhost:7201/CampaignMed';
 
         // Tải dữ liệu khi trang được load
         $(document).ready(function () {
             loadData();
-        });
-
-        // Preview image when file is selected
-        $("#mediaFile").change(function() {
-            selectedFile = this.files[0];
-            if (selectedFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    $("#previewImage").attr('src', e.target.result).show();
-                }
-                reader.readAsDataURL(selectedFile);
-            }
         });
 
         // Hàm tải dữ liệu từ API
@@ -137,28 +118,25 @@
             let html = '';
             data.forEach((item) => {
                 html += `
-                <tr>
-                    <td>${item.mMediaId}</td>
-                    <td>${item.mCampaignId}</td>
-                    <td>${item.mMediaType}</td>
-                    <td>
-                        <img src="${item.mMediaUrl}" alt="Media Image" style="width: 100px; height: auto;" />
-                    </td>
-                    <td>
-                        <button class="btn btn-warning btn-sm" onclick="openDialog('${item.mMediaId}')">Sửa</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteCampaignMedia('${item.mMediaId}')">Xóa</button>
-                    </td>
-                </tr>
-            `;
+            <tr>
+                <td>${item.mMediaId}</td>
+                <td>${item.mCampaignId}</td>
+                <td>${item.mMediaType}</td>
+                <td>
+                    <img src="${item.mMediaUrl}" alt="Media Image" style="width: 100px; height: auto;" />
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="openDialog('${item.mMediaId}')">Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteCampaignMedia('${item.mMediaId}')">Xóa</button>
+                </td>
+            </tr>
+        `;
             });
             $('#dataTable').html(html);
         }
-        
         // Hàm mở dialog
         function openDialog(id = null) {
             $("#editModal").modal("show");
-            $("#previewImage").hide();
-            selectedFile = null;
 
             if (id) {
                 // Chế độ sửa - load dữ liệu và khóa Media ID
@@ -172,9 +150,6 @@
                             $("#campaignID").val(campaignMedia.mCampaignId);
                             $("#mediaType").val(campaignMedia.mMediaType);
                             $("#mediaURL").val(campaignMedia.mMediaUrl);
-                            
-                            // Show preview of existing image
-                            $("#previewImage").attr('src', campaignMedia.mMediaUrl).show();
                         }
                     }
                 });
@@ -192,47 +167,17 @@
             var mediaID = $("#mediaID").val();
             var campaignID = $("#campaignID").val();
             var mediaType = $("#mediaType").val();
+            var mediaURL = $("#mediaURL").val();
 
-            if (!mediaID || !campaignID || !mediaType || (!$("#mediaURL").val() && !selectedFile)) {
+            if (!mediaID || !campaignID || !mediaType || !mediaURL) {
                 alert('Vui lòng nhập đầy đủ thông tin!');
                 return;
             }
 
-            if (selectedFile) {
-                // Create FormData object for file upload
-                const formData = new FormData();
-                formData.append('file', selectedFile);
-                formData.append('mediaId', mediaID);
-                formData.append('campaignId', campaignID);
-                formData.append('mediaType', mediaType);
-
-                // Upload file first
-                $.ajax({
-                    url: `${baseUrl}/UploadMedia`,
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $("#editModal").modal("hide");
-                        loadData();
-                        alert('Thao tác thành công!');
-                        selectedFile = null;
-                    },
-                    error: function(error) {
-                        alert('Lỗi khi tải lên file');
-                        console.error(error);
-                    }
-                });
+            if ($("#mediaID").prop("readonly")) {
+                updateCampaignMedia(mediaID, campaignID, mediaType, mediaURL);
             } else {
-                // Use existing URL
-                var mediaURL = $("#mediaURL").val();
-                
-                if ($("#mediaID").prop("readonly")) {
-                    updateCampaignMedia(mediaID, campaignID, mediaType, mediaURL);
-                } else {
-                    insertCampaignMedia(mediaID, campaignID, mediaType, mediaURL);
-                }
+                insertCampaignMedia(mediaID, campaignID, mediaType, mediaURL);
             }
         }
 
@@ -305,10 +250,6 @@
                 const response = await fetch('https://localhost:7201/api/Campaign/GetList');
                 const campaigns = await response.json();
                 const select = document.getElementById('campaignID');
-                
-                // Clear existing options except the first one
-                $('#campaignID option:not(:first)').remove();
-                
                 campaigns.forEach(campaign => {
                     const option = document.createElement('option');
                     option.value = campaign.cCampaignId;

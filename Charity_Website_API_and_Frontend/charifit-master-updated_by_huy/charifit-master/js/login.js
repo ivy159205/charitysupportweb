@@ -1,53 +1,38 @@
-const inputs = document.querySelectorAll(".input");
-
-
-function addcl(){
-	let parent = this.parentNode.parentNode;
-	parent.classList.add("focus");
-}
-
-function remcl(){
-	let parent = this.parentNode.parentNode;
-	if(this.value == ""){
-		parent.classList.remove("focus");
-	}
-}
-
-
-inputs.forEach(input => {
-	input.addEventListener("focus", addcl);
-	input.addEventListener("blur", remcl);
-});
-
-document.getElementById('loginForm').addEventListener('submit', async function(event) {
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch(`https://localhost:7201/Login/Login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, {
-            method: 'POST'
+        const response = await fetch(`https://localhost:7201/api/GetJWTToken/Login?uid=${encodeURIComponent(email)}&pwd=${encodeURIComponent(password)}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
         });
 
         const data = await response.json();
+        console.log("Response từ API:", data); // Kiểm tra API trả về
 
-        if (response.ok) {
-            localStorage.setItem('userData', JSON.stringify(data));
-            document.getElementById('message').innerText = data.message;
+        if (data.code === 100) {
+            // Lưu vào localStorage
+            localStorage.setItem("userData", JSON.stringify({
+                userId: data.userId,
+                role: data.quyen,
+                token: data.token
+            }));
 
-            // Điều hướng theo role
-            if (data.role === 'admin') {
-                window.location.href = 'admin.html';
+            alert("Đăng nhập thành công!");
+
+            // Điều hướng dựa vào role
+            if (data.quyen === "admin") {
+                window.location.href = "admin.html";
             } else {
-                window.location.href = 'index.html';
+                window.location.href = "index.html";
             }
         } else {
-            document.getElementById('message').innerText = data.message || 'Lỗi đăng nhập!';
+            document.getElementById("message").innerText = data.msg || "Lỗi đăng nhập!";
         }
     } catch (error) {
-        document.getElementById('message').innerText = 'Không thể kết nối tới server!';
+        document.getElementById("message").innerText = "Không thể kết nối tới server!";
     }
 });
-
-

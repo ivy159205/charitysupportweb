@@ -1,5 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using Charity_Website_API.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace project.Controllers
 {
@@ -20,14 +22,28 @@ namespace project.Controllers
             return Ok(db1.TblVolunteers.ToList());
         }
 
+        string TaoVolunteerID()
+        {
+            string id = "";
+            var cmd = db1.Database.GetDbConnection().CreateCommand();
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandText = "sp_volunteer_get_id";
+            cmd.Connection.Open();
+            id = cmd.ExecuteScalar().ToString();
+
+            //var kq = cmd.ExecuteReader();
+            //DataTable dt = new DataTable();
+            //dt.Load(kq);
+            //id = dt.Rows[0][0].ToString();
+            return id;
+        }
+
         [HttpPost]
         [Route("Insert")]
         public IActionResult Insert(string volunteerId, string userId, string campaignId, string status)
         {
-            if (string.IsNullOrEmpty(volunteerId) || string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(campaignId))
-            {
-                return BadRequest(new { message = "Dữ liệu không hợp lệ" });
-            }
+            // tao log_id khi ko goi them truc  => ""
+            if (volunteerId == "null") volunteerId = TaoVolunteerID();
 
             var volunteer = new TblVolunteer
             {

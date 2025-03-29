@@ -122,6 +122,7 @@
                                         <li><a href="About.html">About</a></li>
                                         <li><a href="Cause.html">Caimpaigns</a></li>
                                         <li><a href="contact.html">Contact</a></li>
+                                        <li><a href="volunteerRegistration.html">Volunteer Registration</a></li>
                                     </ul>
                                 </nav>
                                 <div class="Appointment">
@@ -408,23 +409,6 @@
             });
         }
 
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem('userData');
-            window.location.href = 'index.html';
-        });
-        
-        window.onload = function () {
-            const userData = JSON.parse(localStorage.getItem('userData'));
-        
-            if (userData) {
-                document.getElementById('loginBtn').style.display = 'none';
-                document.getElementById('logoutBtn').style.display = 'block';
-            } else {
-                document.getElementById('loginBtn').style.display = 'block';
-                document.getElementById('logoutBtn').style.display = 'none';
-            }
-        };
-
     </script>
 
     <!-- our_volunteer_area_end  -->
@@ -707,6 +691,7 @@
 
     <script src="js/main.js"></script>
     <script src="js/CaimpaignRender.js"></script>
+    <script src="js/hidenseek.js"></script>
 </body>
 
 </html>

@@ -896,6 +896,153 @@
         }
       }
     },
+    "/api/GetJWTToken/Login": {
+      "get": {
+        "tags": [
+          "GetJWTToken"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pwd",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GetJWTToken/GetKey": {
+      "get": {
+        "tags": [
+          "GetJWTToken"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "quyen",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GetJWTToken/GetKeyAdmin": {
+      "get": {
+        "tags": [
+          "GetJWTToken"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pwd",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GetJWTToken/GetKeyCustomer": {
+      "get": {
+        "tags": [
+          "GetJWTToken"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pwd",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GetJWTToken/GetKeyVolunteer": {
+      "get": {
+        "tags": [
+          "GetJWTToken"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pwd",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/Login/Login": {
       "post": {
         "tags": [

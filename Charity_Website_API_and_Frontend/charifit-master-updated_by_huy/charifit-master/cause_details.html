@@ -92,6 +92,13 @@
         color: #fff;
     }
 
+    .donate-btn {
+        display: inline-block;
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
     .section_padding {
         padding: 120px 0;
     }
@@ -166,24 +173,13 @@
                                     <ul id="navigation">
                                         <li><a href="index.html">home</a></li>
                                         <li><a href="About.html">About</a></li>
-                                        <li><a href="#">blog <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="blog.html">blog</a></li>
-                                                <li><a href="single-blog.html">single-blog</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">pages <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="elements.html">elements</a></li>
-                                                <li><a href="Cause.html">Cause</a></li>
-                                            </ul>
-                                        </li>
                                         <li><a href="contact.html">Contact</a></li>
                                     </ul>
                                 </nav>
                                 <div class="Appointment">
                                     <div class="book_btn d-none d-lg-block">
-                                        <a data-scroll-nav='1' href="#">Make a Donate</a>
+                                        <a href="login.html" id="loginBtn">Login</a>
+                                        <a href="#" id="logoutBtn" style="display: none;">Logout</a>
                                     </div>
                                 </div>
                             </div>
@@ -236,6 +232,9 @@
                             </div>
                             <h4 id="campaignTitle">Loading...</h4>
                             <p id="campaignDescription">Loading...</p>
+                            <div class="donate-btn">
+                                <button id="donateButton" class="boxed-btn4">Donate Now</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -245,7 +244,7 @@
     <!-- popular_causes_area_end  -->
 
 
-    <div class="make_donation_area section_padding">
+    <div id="donation_form_section" class="make_donation_area section_padding" style="display: none;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -446,38 +445,57 @@
     <script src="js/mail-script.js"></script>
 
     <script src="js/main.js"></script>
+    <script src="js/hidenseek.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Get campaign ID from URL
             const urlParams = new URLSearchParams(window.location.search);
-            const campaignId = urlParams.get('id'); // Lấy Campaign ID từ URL
-            // Lấy dữ liệu từ localStorage
+            const campaignId = urlParams.get('id');
+            
+            // Check if user is logged in
             const userData = JSON.parse(localStorage.getItem("userData"));
-
-            // Lấy userId từ object (nếu tồn tại)
-            const userId = userData?.userId;
-
-            console.log("User ID:", userId); // Kiểm tra giá trị userId
-            // Lấy User ID từ localStorage
-
-            if (!campaignId) {
-                alert("Không tìm thấy ID chiến dịch.");
-                return;
-            }
-            if (!userId) {
-                alert("Vui lòng đăng nhập để ủng hộ.");
-                return;
+            const isLoggedIn = userData && userData.userId;
+            
+            // Update login/logout button display
+            updateLoginButtons(isLoggedIn);
+            
+            // Show or hide donation form based on login status
+            if (isLoggedIn) {
+                document.getElementById("donation_form_section").style.display = "block";
+                document.getElementById("donateButton").style.display = "none";
+            } else {
+                document.getElementById("donation_form_section").style.display = "none";
+                document.getElementById("donateButton").style.display = "block";
             }
 
+            // Handle donate button click
+            document.getElementById("donateButton").addEventListener("click", function() {
+                // Redirect to login page with return URL
+                window.alert("Vui lòng đăng nhập để ủng hộ.");
+                const returnUrl = encodeURIComponent(window.location.href);
+                window.location.href = `login.html?returnUrl=${returnUrl}`;
+            });
+
+            // Handle donation form submission
             document.getElementById("donationForm").addEventListener("submit", function (event) {
                 event.preventDefault();
+
+                if (!campaignId) {
+                    alert("Không tìm thấy ID chiến dịch.");
+                    return;
+                }
+                if (!isLoggedIn) {
+                    alert("Vui lòng đăng nhập để ủng hộ.");
+                    return;
+                }
 
                 const d_donation_id = generateUniqueId();
                 const d_name = document.getElementById("d_name").value;
                 const d_amount = parseFloat(document.getElementById("d_amount").value);
-                const d_total_value = parseFloat(document.getElementById("d_total_value").value); // Tổng giá trị đơn giản là số tiền ủng hộ
+                const d_total_value = parseFloat(document.getElementById("d_total_value").value);
 
-                // Xây dựng URL với Query String
-                const queryString = `?d_donation_id=${encodeURIComponent(d_donation_id)}&d_user_id=${encodeURIComponent(userId)}&d_campaign_id=${encodeURIComponent(campaignId)}&d_name=${encodeURIComponent(d_name)}&d_amount=${d_amount}&d_total_value=${d_total_value}`;
+                // Build query string
+                const queryString = `?d_donation_id=${encodeURIComponent(d_donation_id)}&d_user_id=${encodeURIComponent(userData.userId)}&d_campaign_id=${encodeURIComponent(campaignId)}&d_name=${encodeURIComponent(d_name)}&d_amount=${d_amount}&d_total_value=${d_total_value}`;
 
                 fetch(`https://localhost:7201/Donation/Insert${queryString}`, {
                     method: "POST"
@@ -486,6 +504,8 @@
                     .then(result => {
                         alert(result);
                         document.getElementById("donationForm").reset();
+                        // Reload campaign data to update progress
+                        loadCampaignDetails(campaignId);
                     })
                     .catch(error => {
                         console.error("Lỗi khi gửi ủng hộ:", error);
@@ -493,27 +513,42 @@
                     });
             });
 
-            function generateUniqueId() {
-                return "D" + Math.random().toString(36).substr(2, 9).toUpperCase();
-            }
-        });
-    </script>
-    <script>
-        const campaignUrl = 'https://localhost:7201/api/Campaign/GetbyID';
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const campaignId = urlParams.get('id'); // Lấy ID từ query string
-
+            // Load campaign details
             if (campaignId) {
                 loadCampaignDetails(campaignId);
             } else {
                 alert("Không tìm thấy ID chiến dịch.");
             }
+
+            // Handle logout
+            document.getElementById("logoutBtn").addEventListener("click", function(e) {
+                e.preventDefault();
+                localStorage.removeItem("userData");
+                updateLoginButtons(false);
+                document.getElementById("donation_form_section").style.display = "none";
+                document.getElementById("donateButton").style.display = "block";
+                alert("Đã đăng xuất thành công!");
+            });
         });
 
+        function updateLoginButtons(isLoggedIn) {
+            if (isLoggedIn) {
+                document.getElementById("loginBtn").style.display = "none";
+                document.getElementById("logoutBtn").style.display = "block";
+            } else {
+                document.getElementById("loginBtn").style.display = "block";
+                document.getElementById("logoutBtn").style.display = "none";
+            }
+        }
+
+        function generateUniqueId() {
+            return "D" + Math.random().toString(36).substr(2, 9).toUpperCase();
+        }
+
+        const campaignUrl = 'https://localhost:7201/api/Campaign/GetbyID';
+
         function loadCampaignDetails(id) {
-            fetch(`${campaignUrl}?id=${id}`) // Gọi API với query string
+            fetch(`${campaignUrl}?id=${id}`) // API call with query string
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Lỗi API: ${response.statusText}`);
@@ -529,7 +564,7 @@
                     document.getElementById("campaignDescription").innerText = campaign.cDescription || "Không có mô tả.";
 
                     const raised = campaign.cCollectedAmount || 0;
-                    const goal = campaign.cGoalAmount || 1; // Tránh chia cho 0
+                    const goal = campaign.cGoalAmount || 1; // Avoid division by zero
                     const progress = (raised / goal) * 100;
 
                     document.getElementById("raisedAmount").innerText = raised.toLocaleString();
@@ -538,7 +573,7 @@
                     document.getElementById("progressBar").setAttribute("aria-valuenow", progress);
                     document.getElementById("progressPercent").innerText = `${Math.round(progress)}%`;
 
-                    // Gọi API để lấy hình ảnh nếu có
+                    // Load campaign image if available
                     loadCampaignImage(campaign);
                 })
                 .catch(error => {
@@ -548,13 +583,14 @@
         }
 
         function loadCampaignImage(campaign) {
-            const mediaList = campaign.media; // Lấy danh sách ảnh từ API
+            const mediaList = campaign.media; // Get media list from API
             if (mediaList && mediaList.length > 0) {
-                document.getElementById("campaignImage").src = mediaList[0].mMediaUrl; // Lấy ảnh đầu tiên
+                document.getElementById("campaignImage").src = mediaList[0].mMediaUrl; // Use first image
             } else {
-                document.getElementById("campaignImage").src = "img/causes/large_img.png"; // Ảnh mặc định
+                document.getElementById("campaignImage").src = "img/causes/large_img.png"; // Default image
             }
         }
+
     </script>
 </body>
 
