@@ -497,6 +497,28 @@
         }
       }
     },
+    "/CampaignMedia/by-campaign/{campaignId}": {
+      "get": {
+        "tags": [
+          "CampaignMedia"
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Comment/GetList": {
       "get": {
         "tags": [

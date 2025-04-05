@@ -13,6 +13,7 @@
     <!-- Place favicon.ico in the root directory -->
 
     <!-- CSS here -->
+    <link rel="stylesheet" href="css/swiper-bundle.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
@@ -27,6 +28,7 @@
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 </head>
 <style>
+    /* Các style hiện có */
     .donation_form_wrapper {
         background-color: #fff;
         border-radius: 10px;
@@ -92,6 +94,13 @@
         color: #fff;
     }
 
+    .donate-btn {
+        display: inline-block;
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
     .section_padding {
         padding: 120px 0;
     }
@@ -109,6 +118,83 @@
             padding: 60px 0;
         }
     }
+
+    /* Style cho hình tròn trong progress bar */
+    .progres_count {
+        position: relative;
+        z-index: 20; /* dùng z-index cao hơn để hiển thị phần tử đè lên trước */
+        /* Đảm bảo hình tròn trong progress bar có z-index cao hơn slider */
+        background-color: #28a745;
+        /* Màu nền xanh */
+        color: #fff;
+        /* Màu chữ trắng */
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Style cho hình tròn trong slider */
+    .image-wrapper {
+        position: relative;
+        width: 100%;
+        z-index: 5;
+        /* Đảm bảo container của ảnh và progress-circle có z-index cao */
+    }
+
+    /* Đảm bảo Swiper không cắt các phần tử con */
+    .swiper,
+    .swiper-wrapper {
+        overflow: visible !important;
+        z-index: 1;
+        /* Đảm bảo Swiper có z-index thấp hơn các hình tròn */
+    }
+
+    .swiper-slide {
+        z-index: 1;
+        /* Đảm bảo các slide của Swiper có z-index thấp hơn */
+    }
+
+    /* Tùy chỉnh mũi tên điều hướng */
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #fff;
+        /* Màu trắng cho mũi tên */
+        background-color: #3CC78F;
+        /* Màu nền đỏ (giống theme của bạn) */
+        width: 40px;
+        /* Kích thước rộng */
+        height: 40px;
+        /* Kích thước cao */
+        border-radius: 50%;
+        /* Làm tròn thành hình tròn */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+        z-index: 15;
+        /* Đảm bảo mũi tên đè lên các phần tử khác trong slider */
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        background-color: #28a745;
+        /* Màu nền khi hover */
+    }
+
+    /* Đảm bảo biểu tượng mũi tên trong Swiper có màu phù hợp */
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 18px;
+        /* Kích thước biểu tượng mũi tên */
+        color: #fff;
+        /* Màu trắng cho biểu tượng */
+    }
+</style>
 </style>
 
 <body>
@@ -166,24 +252,13 @@
                                     <ul id="navigation">
                                         <li><a href="index.html">home</a></li>
                                         <li><a href="About.html">About</a></li>
-                                        <li><a href="#">blog <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="blog.html">blog</a></li>
-                                                <li><a href="single-blog.html">single-blog</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">pages <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="elements.html">elements</a></li>
-                                                <li><a href="Cause.html">Cause</a></li>
-                                            </ul>
-                                        </li>
                                         <li><a href="contact.html">Contact</a></li>
                                     </ul>
                                 </nav>
                                 <div class="Appointment">
                                     <div class="book_btn d-none d-lg-block">
-                                        <a data-scroll-nav='1' href="#">Make a Donate</a>
+                                        <a href="login.html" id="loginBtn">Login</a>
+                                        <a href="#" id="logoutBtn" style="display: none;">Logout</a>
                                     </div>
                                 </div>
                             </div>
@@ -219,7 +294,15 @@
                 <div class="col-lg-12 col-md-12">
                     <div class="single_cause">
                         <div class="thumb">
-                            <img id="campaignImage" src="img/causes/large_img.png" alt="Campaign Image">
+
+                            <div class="swiper mySwiper">
+                                <div class="swiper-wrapper" id="image-slider">
+                                    <!-- Ảnh sẽ được thêm bằng JavaScript -->
+                                </div>
+                                <!-- Nút điều hướng -->
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
                         </div>
                         <div class="causes_content">
                             <div class="custom_progress_bar">
@@ -236,16 +319,20 @@
                             </div>
                             <h4 id="campaignTitle">Loading...</h4>
                             <p id="campaignDescription">Loading...</p>
+                            <div class="donate-btn">
+                                <button id="donateButton" class="boxed-btn4">Donate Now</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- popular_causes_area_end  -->
 
 
-    <div class="make_donation_area section_padding">
+    <div id="donation_form_section" class="make_donation_area section_padding" style="display: none;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -420,6 +507,7 @@
     <!-- link that opens popup -->
 
     <!-- JS here -->
+    <script src="js/swiper-bundle.min.js"></script>
     <script src="js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="js/vendor/jquery-1.12.4.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -446,115 +534,123 @@
     <script src="js/mail-script.js"></script>
 
     <script src="js/main.js"></script>
+    <script src="js/hidenseek.js"></script>
+    <script src="js/SwiperCarousel.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        const campaignUrl = 'https://localhost:7201/api/Campaign/GetbyID';
+        const donationUrl = 'https://localhost:7201/Donation/Insert';
+
+        document.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const campaignId = urlParams.get('id'); // Lấy Campaign ID từ URL
-            // Lấy dữ liệu từ localStorage
+            const campaignId = urlParams.get('id');
             const userData = JSON.parse(localStorage.getItem("userData"));
+            const isLoggedIn = userData && userData.userId;
 
-            // Lấy userId từ object (nếu tồn tại)
-            const userId = userData?.userId;
+            // Update login/logout buttons and donation form visibility
+            const updateLoginButtons = (isLoggedIn) => {
+                const loginBtn = document.getElementById("loginBtn");
+                const logoutBtn = document.getElementById("logoutBtn");
+                const donationFormSection = document.getElementById("donation_form_section");
+                const donateButton = document.getElementById("donateButton");
 
-            console.log("User ID:", userId); // Kiểm tra giá trị userId
-            // Lấy User ID từ localStorage
+                loginBtn.style.display = isLoggedIn ? "none" : "block";
+                logoutBtn.style.display = isLoggedIn ? "block" : "none";
+                donationFormSection.style.display = isLoggedIn ? "block" : "none";
+                donateButton.style.display = isLoggedIn ? "none" : "block";
+            };
 
-            if (!campaignId) {
-                alert("Không tìm thấy ID chiến dịch.");
-                return;
-            }
-            if (!userId) {
-                alert("Vui lòng đăng nhập để ủng hộ.");
-                return;
-            }
+            updateLoginButtons(isLoggedIn);
 
-            document.getElementById("donationForm").addEventListener("submit", function (event) {
+            // Handle donate button click
+            document.getElementById("donateButton").addEventListener("click", () => {
+                window.alert("Vui lòng đăng nhập để ủng hộ.");
+                window.location.href = `login.html?returnUrl=${encodeURIComponent(window.location.href)}`;
+            });
+
+            // Handle donation form submission
+            document.getElementById("donationForm").addEventListener("submit", (event) => {
                 event.preventDefault();
+                if (!campaignId || !isLoggedIn) return alert(campaignId ? "Vui lòng đăng nhập để ủng hộ." : "Không tìm thấy ID chiến dịch.");
 
-                const d_donation_id = generateUniqueId();
+                const d_donation_id = "D" + Math.random().toString(36).substr(2, 9).toUpperCase();
                 const d_name = document.getElementById("d_name").value;
                 const d_amount = parseFloat(document.getElementById("d_amount").value);
-                const d_total_value = parseFloat(document.getElementById("d_total_value").value); // Tổng giá trị đơn giản là số tiền ủng hộ
+                const d_total_value = parseFloat(document.getElementById("d_total_value").value);
+                const queryString = `?d_donation_id=${encodeURIComponent(d_donation_id)}&d_user_id=${encodeURIComponent(userData.userId)}&d_campaign_id=${encodeURIComponent(campaignId)}&d_name=${encodeURIComponent(d_name)}&d_amount=${d_amount}&d_total_value=${d_total_value}`;
 
-                // Xây dựng URL với Query String
-                const queryString = `?d_donation_id=${encodeURIComponent(d_donation_id)}&d_user_id=${encodeURIComponent(userId)}&d_campaign_id=${encodeURIComponent(campaignId)}&d_name=${encodeURIComponent(d_name)}&d_amount=${d_amount}&d_total_value=${d_total_value}`;
-
-                fetch(`https://localhost:7201/Donation/Insert${queryString}`, {
-                    method: "POST"
-                })
-                    .then(response => response.text())
+                fetch(`${donationUrl}${queryString}`, { method: "POST" })
+                    .then(res => res.text())
                     .then(result => {
                         alert(result);
                         document.getElementById("donationForm").reset();
+                        loadCampaignDetails(campaignId);
                     })
-                    .catch(error => {
-                        console.error("Lỗi khi gửi ủng hộ:", error);
+                    .catch(err => {
+                        console.error("Lỗi khi gửi ủng hộ:", err);
                         alert("Lỗi khi gửi ủng hộ.");
                     });
             });
 
-            function generateUniqueId() {
-                return "D" + Math.random().toString(36).substr(2, 9).toUpperCase();
+            // Handle logout
+            document.getElementById("logoutBtn").addEventListener("click", (e) => {
+                e.preventDefault();
+                localStorage.removeItem("userData");
+                updateLoginButtons(false);
+                alert("Đã đăng xuất thành công!");
+            });
+
+            // Load campaign details
+            if (!campaignId) return alert("Không tìm thấy ID chiến dịch.");
+            loadCampaignDetails(campaignId);
+
+            function loadCampaignDetails(id) {
+                fetch(`${campaignUrl}?id=${id}`)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`Lỗi API: ${res.statusText}`);
+                        return res.json();
+                    })
+                    .then(campaign => {
+                        if (!campaign) return alert("Không tìm thấy dữ liệu chiến dịch.");
+
+                        // Update campaign details
+                        document.getElementById("campaignTitle").innerText = campaign.cTitle || "Không có tiêu đề";
+                        document.getElementById("campaignDescription").innerText = campaign.cDescription || "Không có mô tả";
+                        const raised = campaign.cCollectedAmount || 0;
+                        const goal = campaign.cGoalAmount || 1;
+                        const progress = (raised / goal) * 100;
+
+                        document.getElementById("raisedAmount").innerText = raised.toLocaleString();
+                        document.getElementById("goalAmount").innerText = goal.toLocaleString();
+                        document.getElementById("progressBar").style.width = `${progress}%`;
+                        document.getElementById("progressBar").setAttribute("aria-valuenow", progress);
+                        document.getElementById("progressPercent").innerText = `${Math.round(progress)}%`;
+
+                        // Load images into slider
+                        const slider = document.getElementById("image-slider");
+                        slider.innerHTML = "";
+                        const mediaList = campaign.media || [];
+                        if (mediaList.length > 0) {
+                            mediaList.forEach(media => {
+                                const slide = document.createElement("div");
+                                slide.className = "swiper-slide";
+                                slide.innerHTML = `<img src="${media.mMediaUrl}" alt="Campaign Image" style="width: 100%; border-radius: 10px;">`;
+                                slider.appendChild(slide);
+                            });
+                            new Swiper(".mySwiper", {
+                                navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+                                loop: true,
+                                autoplay: { delay: 3000, disableOnInteraction: false }
+                            });
+                        } else {
+                            slider.innerHTML = `<div class="swiper-slide"><img src="img/causes/large_img.png" alt="No image" style="width: 100%; border-radius: 10px;"></div>`;
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Lỗi khi tải dữ liệu chiến dịch:", err);
+                        alert("Lỗi khi tải dữ liệu chiến dịch.");
+                    });
             }
         });
-    </script>
-    <script>
-        const campaignUrl = 'https://localhost:7201/api/Campaign/GetbyID';
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const campaignId = urlParams.get('id'); // Lấy ID từ query string
-
-            if (campaignId) {
-                loadCampaignDetails(campaignId);
-            } else {
-                alert("Không tìm thấy ID chiến dịch.");
-            }
-        });
-
-        function loadCampaignDetails(id) {
-            fetch(`${campaignUrl}?id=${id}`) // Gọi API với query string
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Lỗi API: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(campaign => {
-                    if (!campaign) {
-                        alert("Không tìm thấy dữ liệu chiến dịch.");
-                        return;
-                    }
-                    document.getElementById("campaignTitle").innerText = campaign.cTitle || "Không có tiêu đề";
-                    document.getElementById("campaignDescription").innerText = campaign.cDescription || "Không có mô tả.";
-
-                    const raised = campaign.cCollectedAmount || 0;
-                    const goal = campaign.cGoalAmount || 1; // Tránh chia cho 0
-                    const progress = (raised / goal) * 100;
-
-                    document.getElementById("raisedAmount").innerText = raised.toLocaleString();
-                    document.getElementById("goalAmount").innerText = goal.toLocaleString();
-                    document.getElementById("progressBar").style.width = `${progress}%`;
-                    document.getElementById("progressBar").setAttribute("aria-valuenow", progress);
-                    document.getElementById("progressPercent").innerText = `${Math.round(progress)}%`;
-
-                    // Gọi API để lấy hình ảnh nếu có
-                    loadCampaignImage(campaign);
-                })
-                .catch(error => {
-                    console.error("Lỗi khi tải dữ liệu chiến dịch:", error);
-                    alert("Lỗi khi tải dữ liệu chiến dịch.");
-                });
-        }
-
-        function loadCampaignImage(campaign) {
-            const mediaList = campaign.media; // Lấy danh sách ảnh từ API
-            if (mediaList && mediaList.length > 0) {
-                document.getElementById("campaignImage").src = mediaList[0].mMediaUrl; // Lấy ảnh đầu tiên
-            } else {
-                document.getElementById("campaignImage").src = "img/causes/large_img.png"; // Ảnh mặc định
-            }
-        }
     </script>
 </body>
 

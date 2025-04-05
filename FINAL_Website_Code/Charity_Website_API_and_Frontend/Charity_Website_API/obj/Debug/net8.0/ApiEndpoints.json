@@ -389,6 +389,22 @@
   },
   {
     "ContainingType": "Charity_Website_API.Controllers.CampaignMedia",
+    "Method": "GetMediaByCampaign",
+    "RelativePath": "CampaignMedia/by-campaign/{campaignId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "campaignId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Charity_Website_API.Controllers.CampaignMedia",
     "Method": "DeleteCampaignMed",
     "RelativePath": "CampaignMedia/Delete",
     "HttpMethod": "POST",

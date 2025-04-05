@@ -176,5 +176,23 @@ namespace Charity_Website_API.Controllers
             }
         }
 
+        [HttpGet("by-campaign/{campaignId}")]
+        public async Task<IActionResult> GetMediaByCampaign(string campaignId)
+        {
+            var mediaList = await dbc.TblCampaignMedia
+                .Where(m => m.MCampaignId == campaignId && m.MMediaType == "Ảnh")
+                .Select(m => new
+                {
+                    m.MMediaId,
+                    m.MMediaUrl
+                }).ToListAsync();
+            if (mediaList == null || !mediaList.Any())
+            {
+                return NotFound(new { message = "Không tìm thấy ảnh cho chiến dịch này." });
+            }
+
+            return Ok(mediaList);
+        }
+
     }
 }
