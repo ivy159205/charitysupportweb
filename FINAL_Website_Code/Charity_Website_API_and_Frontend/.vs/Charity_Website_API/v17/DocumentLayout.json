@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|c:\\users\\admin\\desktop\\finalwebsitecode\\final_website_code\\charity_website_api_and_frontend\\charity_website_api\\controllers\\campaignmedia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|solutionrelative:charity_website_api\\controllers\\campaignmedia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|c:\\users\\admin\\desktop\\finalwebsitecode\\final_website_code\\charity_website_api_and_frontend\\charity_website_api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|solutionrelative:charity_website_api\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|c:\\users\\admin\\desktop\\finalwebsitecode\\final_website_code\\charity_website_api_and_frontend\\charity_website_api\\controllers\\getjwttoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|solutionrelative:charity_website_api\\controllers\\getjwttoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|c:\\users\\admin\\desktop\\finalwebsitecode\\final_website_code\\charity_website_api_and_frontend\\charity_website_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|solutionrelative:charity_website_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|c:\\users\\admin\\desktop\\finalwebsitecode\\final_website_code\\charity_website_api_and_frontend\\charity_website_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|solutionrelative:charity_website_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|c:\\users\\admin\\desktop\\finalwebsitecode\\final_website_code\\charity_website_api_and_frontend\\charity_website_api\\controllers\\volunteercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{503CE9C0-B516-4940-A7C3-ECCD55FC35E2}|Charity_Website_API\\Charity_Website_API.csproj|solutionrelative:charity_website_api\\controllers\\volunteercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,54 +46,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "VolunteerController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\VolunteerController.cs",
-              "RelativeDocumentMoniker": "Charity_Website_API\\Controllers\\VolunteerController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\VolunteerController.cs",
-              "RelativeToolTip": "Charity_Website_API\\Controllers\\VolunteerController.cs",
-              "ViewState": "AgIAAGUAAAAAAAAAAAAYwHIAAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T08:05:21.93Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CampaignMedia.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\CampaignMedia.cs",
-              "RelativeDocumentMoniker": "Charity_Website_API\\Controllers\\CampaignMedia.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\CampaignMedia.cs",
-              "RelativeToolTip": "Charity_Website_API\\Controllers\\CampaignMedia.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-18T14:25:04.368Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\appsettings.json",
-              "RelativeDocumentMoniker": "Charity_Website_API\\appsettings.json",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\appsettings.json",
-              "RelativeToolTip": "Charity_Website_API\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-18T14:20:46.388Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Program.cs",
               "RelativeDocumentMoniker": "Charity_Website_API\\Program.cs",
               "ToolTip": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Program.cs",
               "RelativeToolTip": "Charity_Website_API\\Program.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAgAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAswBgAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-18T14:11:41.728Z",
+              "WhenOpened": "2025-04-05T08:54:03.794Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GetJWTToken.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\GetJWTToken.cs",
+              "RelativeDocumentMoniker": "Charity_Website_API\\Controllers\\GetJWTToken.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\GetJWTToken.cs",
+              "RelativeToolTip": "Charity_Website_API\\Controllers\\GetJWTToken.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAADwv1gAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T08:53:27.325Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Charity_Website_API\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\FinalWebsiteCode\\FINAL_Website_Code\\Charity_Website_API_and_Frontend\\Charity_Website_API\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Charity_Website_API\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAIAwwGAAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T08:50:12.243Z",
               "EditorCaption": ""
             }
           ]

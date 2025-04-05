@@ -1,6 +1,6 @@
 
 const campaignUrl = 'https://localhost:7201/api/Campaign';
-const imageUrl = 'https://localhost:7201/CampaignMed';
+const imageUrl = 'https://localhost:7201/CampaignMedia';
 
 $(document).ready(function () {
     loadCampaignData();

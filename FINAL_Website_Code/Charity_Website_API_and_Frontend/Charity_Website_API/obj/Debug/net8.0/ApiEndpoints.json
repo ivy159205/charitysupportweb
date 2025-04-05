@@ -320,11 +320,6 @@
         "Name": "uid",
         "Type": "System.String",
         "IsRequired": false
-      },
-      {
-        "Name": "pwd",
-        "Type": "System.String",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -86,7 +86,7 @@ namespace Charity_Website_API.Controllers
         [HttpGet]
         [Route("GetKeyAdmin")]
 
-        public IActionResult GetKeyAdmin(string uid, string pwd)
+        public IActionResult GetKeyAdmin(string uid)
         {
             var jwtHandle = new JwtSecurityTokenHandler();
             var key = cfg["AppSettings:SecretKey"];

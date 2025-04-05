@@ -1,4 +1,5 @@
 ﻿using Charity_Website_API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,6 +79,7 @@ namespace CharityWEB.Controllers
 
         [HttpPost]
         [Route("Delete")]
+        [Authorize(Policy = "AdminPolicy")]
         public IActionResult Delete(string u_user_id)
         {
             if (string.IsNullOrEmpty(u_user_id))

@@ -854,13 +854,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "pwd",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
