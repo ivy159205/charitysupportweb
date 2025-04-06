@@ -1,7 +1,16 @@
-const campaignUrl = 'https://localhost:7201/api/Campaign'; 
+const campaignUrl = 'https://localhost:7201/api/Campaign';
 const imageUrl = 'https://localhost:7201/CampaignMedia';
 
 document.addEventListener("DOMContentLoaded", function () {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+
+    if (userData) {
+        document.getElementById('loginBtn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'block';
+    } else {
+        document.getElementById('loginBtn').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'none';
+    }
     loadCampaignData();
 });
 
