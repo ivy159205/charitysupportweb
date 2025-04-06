@@ -1,5 +1,9 @@
 const campaignUrl = 'https://localhost:7201/api/Campaign';
 const imageUrl = 'https://localhost:7201/CampaignMedia';
+let currentPage = 1;
+const itemsPerPage = 9;
+let allCampaigns = [];
+let allMedia = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     loadCampaignData();
@@ -9,7 +13,8 @@ function loadCampaignData() {
     fetch(`${campaignUrl}/GetList`)
         .then(response => response.json())
         .then(campaigns => {
-            loadCampaignImages(campaigns);
+            allCampaigns = campaigns;
+            loadCampaignImages();
         })
         .catch(error => {
             alert('Lỗi khi tải dữ liệu chiến dịch');
@@ -17,24 +22,29 @@ function loadCampaignData() {
         });
 }
 
-function loadCampaignImages(campaigns) {
+function loadCampaignImages() {
     fetch(`${imageUrl}/GetList`)
         .then(response => response.json())
         .then(images => {
-            renderCampaigns(campaigns, images);
+            allMedia = images;
+            renderCampaigns(); // Gọi render sau khi có đủ dữ liệu
+            renderPagination(); // Vẽ phân trang
         })
         .catch(error => {
             alert('Lỗi khi tải hình ảnh chiến dịch');
             console.error(error);
         });
 }
-
-function renderCampaigns(campaigns, mediaData) {
+function renderCampaigns() {
     const campaignContainer = document.getElementById("campaign-list");
     campaignContainer.innerHTML = "";
 
-    campaigns.forEach(campaign => {
-        const media = mediaData.find(m => m.mCampaignId === campaign.cCampaignId);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const campaignsToRender = allCampaigns.slice(startIndex, endIndex);
+
+    campaignsToRender.forEach(campaign => {
+        const media = allMedia.find(m => m.mCampaignId === campaign.cCampaignId);
         const image = media ? media.mMediaUrl : "img/default.jpg";
 
         const raised = campaign.cCollectedAmount || 0;
@@ -71,3 +81,4 @@ function renderCampaigns(campaigns, mediaData) {
         campaignContainer.innerHTML += campaignElement;
     });
 }
+

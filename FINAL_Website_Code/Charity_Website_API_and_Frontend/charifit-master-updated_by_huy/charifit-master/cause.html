@@ -82,14 +82,15 @@
                                     <ul id="navigation">
                                         <li><a href="index.html">home</a></li>
                                         <li><a href="About.html">About</a></li> 
-                                        <li><a href="Cause.html">Caimpaign <i class="ti-angle-down"></i></a>
+                                        <li><a href="Cause.html">Caimpaigns</a>
                                         </li>
                                         <li><a href="contact.html">Contact</a></li>
                                     </ul>
                                 </nav>
                                 <div class="Appointment">
                                     <div class="book_btn d-none d-lg-block">
-                                       
+                                        <a href="login.html" id="loginBtn">Logout</a>
+                                        <a href="login.html" id="logoutBtn" style="display: none;">Logout</a>
                                     </div>
                                 </div>
                             </div>
@@ -124,6 +125,13 @@
             <div class="row" id="campaign-list">
                 <!-- Chiến dịch sẽ được render ở đây -->
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <nav id="pagination-container" class="text-center mt-4">
+                <!-- Nút phân trang sẽ hiển thị ở đây -->
+            </nav>
         </div>
     </div>
     
@@ -286,7 +294,27 @@
     <script src="js/jquery.form.js"></script>
     <script src="js/jquery.validate.min.js"></script>
     <script src="js/mail-script.js"></script>
-
+    <script>
+    function renderPagination() {
+        const totalPages = Math.ceil(allCampaigns.length / itemsPerPage);
+        const paginationContainer = document.getElementById("pagination-container");
+        paginationContainer.innerHTML = "";
+    
+        let buttonsHTML = "";
+    
+        for (let i = 1; i <= totalPages; i++) {
+            buttonsHTML += `<button class="btn btn-sm ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'} m-1" onclick="goToPage(${i})">${i}</button>`;
+        }
+    
+        paginationContainer.innerHTML = buttonsHTML;
+    }
+    
+    function goToPage(page) {
+        currentPage = page;
+        renderCampaigns();
+        renderPagination();
+    }
+    </script>
     <script src="js/main.js"></script>
     <script src="js/CampaignList.js"></script>
 </body>
