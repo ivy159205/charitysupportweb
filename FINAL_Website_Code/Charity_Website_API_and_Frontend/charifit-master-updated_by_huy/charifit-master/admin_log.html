@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý lịch sử sửa đổi hệ thống</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Thêm thư viện SheetJS (xlsx) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Thêm FileSaver để tải xuống file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
+
 <body>
     <div class="container mt-4">
         <h2 class="text-center">Quản lý lịch sử sửa đổi hệ thống</h2>
-        
+
         <!-- Thanh Menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -28,7 +34,7 @@
 
         <!-- Thanh tìm kiếm và nút thêm mới -->
         <div class="row mt-2">
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <div class="input-group">
                     <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
                     <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
@@ -37,10 +43,13 @@
             <div class="col-md-2">
                 <button class="btn btn-primary w-100" onclick="openDialog()">Thêm log</button>
             </div>
+            <div class="col-md-2">
+                <button class="btn btn-success w-100" onclick="exportToExcel()">Xuất Excel</button>
+            </div>
         </div>
 
         <!-- Bảng hiển thị dữ liệu -->
-        <table class="table table-bordered mt-3">
+        <table class="table table-bordered mt-3" id="adminLogTable">
             <thead>
                 <tr>
                     <th>Log ID</th>
@@ -85,8 +94,11 @@
         // Khai báo URL cơ bản của API
         const baseUrl = 'https://localhost:7201/AdminLog';
 
+        // Biến lưu trữ dữ liệu toàn cục
+        let adminLogData = [];
+
         // Tải dữ liệu khi trang được load
-        $(document).ready(function() {
+        $(document).ready(function () {
             loadData();
         });
 
@@ -95,10 +107,11 @@
             $.ajax({
                 url: `${baseUrl}/GetList`,
                 method: 'GET',
-                success: function(data) {
+                success: function (data) {
+                    adminLogData = data; // Lưu dữ liệu vào biến toàn cục
                     renderTable(data);
                 },
-                error: function(error) {
+                error: function (error) {
                     alert('Lỗi khi tải dữ liệu');
                     console.error(error);
                 }
@@ -134,7 +147,7 @@
                 $.ajax({
                     url: `${baseUrl}/GetList`,
                     method: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         const adminLog = data.find(x => x.aLogId === id);
                         if (adminLog) {
                             $("#logID").val(adminLog.aLogId).prop("readonly", true);
@@ -176,12 +189,12 @@
             $.ajax({
                 url: url,
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     $("#editModal").modal("hide");
                     loadData();
                     alert('Thêm mới thành công!');
                 },
-                error: function(error) {
+                error: function (error) {
                     alert('Lỗi khi thêm dữ liệu');
                     console.error(error);
                 }
@@ -195,12 +208,12 @@
             $.ajax({
                 url: url,
                 method: 'POST',
-                success: function(response) {
+                success: function (response) {
                     $("#editModal").modal("hide");
                     loadData();
                     alert('Cập nhật thành công!');
                 },
-                error: function(error) {
+                error: function (error) {
                     alert('Lỗi khi cập nhật dữ liệu');
                     console.error(error);
                 }
@@ -213,11 +226,11 @@
                 $.ajax({
                     url: `${baseUrl}/Delete?a_log_id=${encodeURIComponent(id)}`,
                     method: 'POST',
-                    success: function(response) {
+                    success: function (response) {
                         loadData();
                         alert('Xóa thành công!');
                     },
-                    error: function(error) {
+                    error: function (error) {
                         alert('Lỗi khi xóa dữ liệu');
                         console.error(error);
                     }
@@ -226,14 +239,42 @@
         }
 
         // Hàm tìm kiếm
-        $("#searchInput").on("keyup", function() {
+        $("#searchInput").on("keyup", function () {
             let value = $(this).val().toLowerCase();
-            $("#dataTable tr").filter(function() {
+            $("#dataTable tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
             });
         });
+
+        // Hàm xuất ra file Excel
+        function exportToExcel() {
+            // Chuẩn bị dữ liệu để xuất
+            const dataToExport = adminLogData.map(item => {
+                return {
+                    'Log ID': item.aLogId,
+                    'Admin ID': item.aAdminId,
+                    'Action': item.aAction,
+                    'Action Date': new Date(item.aActionDate).toLocaleString()
+                };
+            });
+
+            // Tạo workbook và worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+
+            // Thêm worksheet vào workbook
+            XLSX.utils.book_append_sheet(wb, ws, "AdminLog");
+
+            // Tạo tên file với ngày giờ hiện tại
+            const now = new Date();
+            const fileName = `AdminLog_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}.xlsx`;
+
+            // Xuất file
+            XLSX.writeFile(wb, fileName);
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

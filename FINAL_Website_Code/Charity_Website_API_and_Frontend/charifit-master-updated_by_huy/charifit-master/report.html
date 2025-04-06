@@ -7,6 +7,10 @@
     <title>Quản lý báo cáo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Thêm thư viện SheetJS (xlsx) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Thêm FileSaver để tải xuống file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 
 <body>
@@ -29,7 +33,7 @@
         </nav>
 
         <div class="row mt-2">
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <div class="input-group">
                     <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm...">
                     <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
@@ -38,10 +42,13 @@
             <div class="col-md-2">
                 <button class="btn btn-primary w-100" onclick="openDialog()">Thêm báo cáo</button>
             </div>
+            <div class="col-md-2">
+                <button class="btn btn-success w-100" onclick="exportToExcel()">Xuất Excel</button>
+            </div>
         </div>
 
         <!-- Bảng Hiển Thị -->
-        <table class="table table-bordered mt-3">
+        <table class="table table-bordered mt-3" id="reportTable">
             <thead>
                 <tr>
                     <th>Report ID</th>
@@ -85,172 +92,227 @@
 
     <script>
         // Biến lưu trữ URL cơ bản
-const baseUrl = 'https://localhost:7201/Report';
+        const baseUrl = 'https://localhost:7201/Report';
 
-// Hàm load dữ liệu khi trang được tải
-$(document).ready(function () {
-    loadData();
-    loadCampaigns();
-});
+        // Biến lưu trữ dữ liệu toàn cục cho báo cáo
+        let reportData = [];
 
-// Hàm tải dữ liệu từ API
-function loadData() {
-    $.ajax({
-        url: `${baseUrl}/GetList`,
-        method: 'GET',
-        success: function (data) {
-            renderTable(data);
-        },
-        error: function (error) {
-            alert('Lỗi khi tải dữ liệu');
-            console.error(error);
-        }
-    });
-}
+        // Biến lưu trữ thông tin campaign
+        let campaignList = [];
 
-// Hàm render bảng với dữ liệu từ API
-function renderTable(data) {
-    let html = '';
-    data.forEach((item, index) => {
-        html += `
-    <tr>
-        <td>${item.rReportId}</td>
-        <td>${item.rCampaignId}</td>
-        <td>${item.rReportDetails}</td>
-        <td>
-            <button class="btn btn-warning btn-sm" onclick="openDialog('${item.rReportId}')">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteReport('${item.rReportId}')">Xóa</button>
-        </td>
-    </tr>
-`;
-    });
-    $('#dataTable').html(html);
-}
+        // Hàm load dữ liệu khi trang được tải
+        $(document).ready(function () {
+            loadData();
+            loadCampaigns();
+        });
 
-// Hàm mở dialog và load dữ liệu nếu là chế độ sửa
-function openDialog(id = null) {
-    $("#editModal").modal("show");
-    
-    if (id) {
-        // Đang ở chế độ sửa -> Chặn chỉnh sửa Report ID
-        $.ajax({
-            url: `${baseUrl}/GetList`,
-            method: 'GET',
-            success: function (data) {
-                const report = data.find(x => x.rReportId === id);
-                if (report) {
-                    $("#report_id").val(report.rReportId).prop("readonly", true);
-                    $("#campaignID").val(report.rCampaignId);
-                    $("#report_details").val(report.rReportDetails);
+        // Hàm tải dữ liệu từ API
+        function loadData() {
+            $.ajax({
+                url: `${baseUrl}/GetList`,
+                method: 'GET',
+                success: function (data) {
+                    reportData = data; // Lưu vào biến toàn cục
+                    renderTable(data);
+                },
+                error: function (error) {
+                    alert('Lỗi khi tải dữ liệu');
+                    console.error(error);
                 }
-            },
-            error: function(error) {
-                console.error('Lỗi khi lấy thông tin report:', error);
-            }
-        });
-    } else {
-        // Xóa dữ liệu form nếu là thêm mới
-        $("#report_id").val("").prop("readonly", false);
-        $("#campaignID").val("");
-        $("#report_details").val("");
-    }
-}
-
-function saveReport() {
-    const r_report_id = $("#report_id").val();
-    const r_campaign_id = $("#campaignID").val();
-    const r_report_details = $("#report_details").val();
-
-    if (!r_report_id || !r_campaign_id || !r_report_details) {
-        alert('Vui lòng nhập đầy đủ thông tin!');
-        return;
-    }
-
-    if ($("#report_id").prop("readonly")) {
-        updateReport(r_report_id, r_campaign_id, r_report_details);
-    } else {
-        insertReport(r_report_id, r_campaign_id, r_report_details);
-    }
-}
-
-function insertReport(r_report_id, r_campaign_id, r_report_details) {
-    const url = `${baseUrl}/Insert?r_report_id=${encodeURIComponent(r_report_id)}&r_campaign_id=${encodeURIComponent(r_campaign_id)}&r_report_details=${encodeURIComponent(r_report_details)}`;
-
-    $.ajax({
-        url: url,
-        method: 'POST',
-        success: function (response) {
-            $("#editModal").modal("hide");
-            loadData();
-            alert('Thêm mới thành công!');
-        },
-        error: function (error) {
-            alert('Lỗi khi thêm dữ liệu');
-            console.error(error);
+            });
         }
-    });
-}
 
-function updateReport(r_report_id, r_campaign_id, r_report_details) {
-    const url = `${baseUrl}/Update?r_report_id=${encodeURIComponent(r_report_id)}&r_campaign_id=${encodeURIComponent(r_campaign_id)}&r_report_details=${encodeURIComponent(r_report_details)}`;
-
-    $.ajax({
-        url: url,
-        method: 'POST',
-        success: function (response) {
-            $("#editModal").modal("hide");
-            loadData();
-            alert('Cập nhật thành công!');
-        },
-        error: function (error) {
-            alert('Lỗi khi cập nhật dữ liệu');
-            console.error(error);
+        // Hàm render bảng với dữ liệu từ API
+        function renderTable(data) {
+            let html = '';
+            data.forEach((item, index) => {
+                html += `
+                    <tr>
+                        <td>${item.rReportId}</td>
+                        <td>${item.rCampaignId}</td>
+                        <td>${item.rReportDetails}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openDialog('${item.rReportId}')">Sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteReport('${item.rReportId}')">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            $('#dataTable').html(html);
         }
-    });
-}
 
-function deleteReport(id) {
-    if (confirm('Bạn có chắc muốn xóa?')) {
-        $.ajax({
-            url: `${baseUrl}/Delete?r_report_id=${encodeURIComponent(id)}`, // Truyền ID qua query string
-            method: 'POST', 
-            success: function (response) {
-                loadData();
-                alert('Xóa thành công!');
-            },
-            error: function (xhr, status, error) {
-                alert(`Lỗi khi xóa dữ liệu: ${xhr.responseText}`);
-                console.error(xhr, status, error);
+        // Hàm mở dialog và load dữ liệu nếu là chế độ sửa
+        function openDialog(id = null) {
+            $("#editModal").modal("show");
+
+            if (id) {
+                // Đang ở chế độ sửa -> Chặn chỉnh sửa Report ID
+                $.ajax({
+                    url: `${baseUrl}/GetList`,
+                    method: 'GET',
+                    success: function (data) {
+                        const report = data.find(x => x.rReportId === id);
+                        if (report) {
+                            $("#report_id").val(report.rReportId).prop("readonly", true);
+                            $("#campaignID").val(report.rCampaignId);
+                            $("#report_details").val(report.rReportDetails);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Lỗi khi lấy thông tin report:', error);
+                    }
+                });
+            } else {
+                // Xóa dữ liệu form nếu là thêm mới
+                $("#report_id").val("").prop("readonly", false);
+                $("#campaignID").val("");
+                $("#report_details").val("");
             }
-        });
-    }
-}
+        }
 
-// Tìm kiếm Report theo từ khóa
-$("#searchInput").on("keyup", function () {
-    let value = $(this).val().toLowerCase();
-    $("#dataTable tr").filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-    });
-});
+        function saveReport() {
+            const r_report_id = $("#report_id").val();
+            const r_campaign_id = $("#campaignID").val();
+            const r_report_details = $("#report_details").val();
 
-async function loadCampaigns() {
-    try {
-        const response = await fetch('https://localhost:7201/api/Campaign/GetList');
-        const campaigns = await response.json();
-        const select = document.getElementById('campaignID');
-        // Xóa các option cũ trước khi thêm mới
-        select.innerHTML = '<option value="">Chọn Campaign</option>';
-        campaigns.forEach(campaign => {
-            const option = document.createElement('option');
-            option.value = campaign.cCampaignId;
-            option.textContent = campaign.cTitle;
-            select.appendChild(option);
+            if (!r_report_id || !r_campaign_id || !r_report_details) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if ($("#report_id").prop("readonly")) {
+                updateReport(r_report_id, r_campaign_id, r_report_details);
+            } else {
+                insertReport(r_report_id, r_campaign_id, r_report_details);
+            }
+        }
+
+        function insertReport(r_report_id, r_campaign_id, r_report_details) {
+            const url = `${baseUrl}/Insert?r_report_id=${encodeURIComponent(r_report_id)}&r_campaign_id=${encodeURIComponent(r_campaign_id)}&r_report_details=${encodeURIComponent(r_report_details)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Thêm mới thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi thêm dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        function updateReport(r_report_id, r_campaign_id, r_report_details) {
+            const url = `${baseUrl}/Update?r_report_id=${encodeURIComponent(r_report_id)}&r_campaign_id=${encodeURIComponent(r_campaign_id)}&r_report_details=${encodeURIComponent(r_report_details)}`;
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (response) {
+                    $("#editModal").modal("hide");
+                    loadData();
+                    alert('Cập nhật thành công!');
+                },
+                error: function (error) {
+                    alert('Lỗi khi cập nhật dữ liệu');
+                    console.error(error);
+                }
+            });
+        }
+
+        function deleteReport(id) {
+            if (confirm('Bạn có chắc muốn xóa?')) {
+                $.ajax({
+                    url: `${baseUrl}/Delete?r_report_id=${encodeURIComponent(id)}`, // Truyền ID qua query string
+                    method: 'POST',
+                    success: function (response) {
+                        loadData();
+                        alert('Xóa thành công!');
+                    },
+                    error: function (xhr, status, error) {
+                        alert(`Lỗi khi xóa dữ liệu: ${xhr.responseText}`);
+                        console.error(xhr, status, error);
+                    }
+                });
+            }
+        }
+
+        // Tìm kiếm Report theo từ khóa
+        $("#searchInput").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+            $("#dataTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
         });
-    } catch (error) {
-        console.error('Lỗi khi load Campaign:', error);
-    }
-}
+
+        async function loadCampaigns() {
+            try {
+                const response = await fetch('https://localhost:7201/api/Campaign/GetList');
+                const campaigns = await response.json();
+                campaignList = campaigns; // Lưu danh sách campaign vào biến toàn cục
+
+                const select = document.getElementById('campaignID');
+                // Xóa các option cũ trước khi thêm mới
+                select.innerHTML = '<option value="">Chọn Campaign</option>';
+                campaigns.forEach(campaign => {
+                    const option = document.createElement('option');
+                    option.value = campaign.cCampaignId;
+                    option.textContent = campaign.cTitle;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Lỗi khi load Campaign:', error);
+            }
+        }
+
+        // Hàm xuất dữ liệu ra file Excel
+        function exportToExcel() {
+            // Nếu không có dữ liệu
+            if (reportData.length === 0) {
+                alert('Không có dữ liệu để xuất');
+                return;
+            }
+
+            // Chuẩn bị dữ liệu để xuất ra Excel
+            const dataToExport = reportData.map(item => {
+                // Tìm tên chiến dịch tương ứng
+                const campaign = campaignList.find(c => c.cCampaignId === item.rCampaignId);
+                const campaignTitle = campaign ? campaign.cTitle : item.rCampaignId;
+
+                return {
+                    'Report ID': item.rReportId,
+                    'Campaign ID': item.rCampaignId,
+                    'Campaign Name': campaignTitle,
+                    'Report Details': item.rReportDetails
+                };
+            });
+
+            // Tạo workbook và worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(dataToExport);
+
+            // Điều chỉnh độ rộng cột (col width)
+            const colWidths = [
+                { wch: 15 }, // Report ID
+                { wch: 15 }, // Campaign ID
+                { wch: 25 }, // Campaign Name
+                { wch: 50 }  // Report Details
+            ];
+            ws['!cols'] = colWidths;
+
+            // Thêm worksheet vào workbook
+            XLSX.utils.book_append_sheet(wb, ws, "Reports");
+
+            // Tạo tên file với ngày giờ hiện tại
+            const now = new Date();
+            const fileName = `Reports_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}.xlsx`;
+
+            // Xuất file
+            XLSX.writeFile(wb, fileName);
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
