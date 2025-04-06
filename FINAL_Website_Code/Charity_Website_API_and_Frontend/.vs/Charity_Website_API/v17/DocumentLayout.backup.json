@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -45,10 +45,6 @@
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "CampaignMedia.cs",
@@ -58,8 +54,7 @@
               "RelativeToolTip": "Charity_Website_API\\Controllers\\CampaignMedia.cs",
               "ViewState": "AgIAACoAAAAAAAAAAAAiwDoAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T13:35:47.564Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-05T13:35:47.564Z"
             },
             {
               "$type": "Document",
@@ -84,8 +79,7 @@
               "RelativeToolTip": "Charity_Website_API\\Controllers\\GetJWTToken.cs",
               "ViewState": "AgIAAGgAAAAAAAAAAADwv1gAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T08:53:27.325Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-05T08:53:27.325Z"
             },
             {
               "$type": "Document",
@@ -98,6 +92,10 @@
               "ViewState": "AgIAAFEAAAAAAAAAAAApwGAAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-05T08:50:12.243Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }

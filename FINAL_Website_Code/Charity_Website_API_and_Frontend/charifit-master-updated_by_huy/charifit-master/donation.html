@@ -49,6 +49,7 @@
                     <th>Amount</th>
                     <th>Total Value</th>
                     <th>Donation Date</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="dataTable"></tbody>
@@ -124,7 +125,7 @@
         function formatNumber(number) {
             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
-        
+
         // Hàm render bảng với dữ liệu
         function renderTable(data) {
             let html = '';
